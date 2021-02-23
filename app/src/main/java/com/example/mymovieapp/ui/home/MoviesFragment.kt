@@ -22,10 +22,10 @@ class MoviesFragment : Fragment() {
         moviesViewModel =
                 ViewModelProvider(this).get(MoviesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_movies, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        moviesViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+//        val textView: TextView = root.findViewById(R.id.text_home)
+//        moviesViewModel.text.observe(viewLifecycleOwner, Observer {
+//            textView.text = it
+//        })
         return root
     }
 }
