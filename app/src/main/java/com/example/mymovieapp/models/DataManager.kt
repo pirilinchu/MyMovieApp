@@ -7,11 +7,26 @@ object DataManager {
     var moviesNow = ArrayList<Movie>()
     var moviesPopular = ArrayList<Movie>()
     var moviesIncoming = ArrayList<Movie>()
+    var series = ArrayList<Movie>()
 
     init {
         initializeMoviesNow()
         initializeMoviesPopular()
         initializeMoviesIncoming()
+        initializeSeries()
+    }
+
+    private fun initializeSeries() {
+        var movie: Movie = Movie("movie43", R.drawable.poster)
+        series.add(movie)
+        movie = Movie("movie2", R.drawable.poster)
+        series.add(movie)
+        movie = Movie("movie3", R.drawable.poster)
+        series.add(movie)
+        movie = Movie("movie4", R.drawable.poster2)
+        series.add(movie)
+        movie = Movie("movie5", R.drawable.poster2)
+        series.add(movie)
     }
 
     private fun initializeMoviesNow() {
