@@ -14,8 +14,13 @@ import com.example.mymovieapp.models.Movie
 
 class MoviesFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var movies: List<Movie>
+    private lateinit var recyclerViewNow: RecyclerView
+    private lateinit var recyclerViewPopular: RecyclerView
+    private lateinit var recyclerViewIncoming: RecyclerView
+
+    private lateinit var moviesNow: List<Movie>
+    private lateinit var moviesPopular: List<Movie>
+    private lateinit var moviesIncoming: List<Movie>
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -23,10 +28,24 @@ class MoviesFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         var root: View = inflater.inflate(R.layout.fragment_movies, container, false)
-        recyclerView = root.findViewById(R.id.recyclerViewNow)
-        var recyclerViewAdapter: RecyclerViewAdapter = RecyclerViewAdapter(requireContext(), movies)
-        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = recyclerViewAdapter
+        recyclerViewNow = root.findViewById(R.id.recyclerViewNow)
+        recyclerViewPopular = root.findViewById(R.id.recyclerViewPopular)
+        recyclerViewIncoming = root.findViewById(R.id.recyclerViewIncoming)
+
+        var recyclerViewAdapterNow: RecyclerViewAdapter = RecyclerViewAdapter(requireContext(), moviesNow)
+        var recyclerViewAdapterPopular: RecyclerViewAdapter = RecyclerViewAdapter(requireContext(), moviesPopular)
+        var recyclerViewAdapterIncoming: RecyclerViewAdapter = RecyclerViewAdapter(requireContext(), moviesIncoming)
+
+        recyclerViewNow.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewNow.adapter = recyclerViewAdapterNow
+
+        recyclerViewPopular.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewPopular.adapter = recyclerViewAdapterPopular
+
+        recyclerViewIncoming.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewIncoming.adapter = recyclerViewAdapterIncoming
+
+
 
         return root
     }
@@ -34,7 +53,9 @@ class MoviesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        movies = DataManager.moviesNow
+        moviesNow = DataManager.moviesNow
+        moviesPopular = DataManager.moviesPopular
+        moviesIncoming = DataManager.moviesIncoming
     }
 }
 
