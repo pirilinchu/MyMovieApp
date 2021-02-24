@@ -4,28 +4,44 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mymovieapp.GridViewAdapter
 import com.example.mymovieapp.R
+import com.example.mymovieapp.RecyclerViewSeriesAdapter
+import com.example.mymovieapp.models.DataManager
+import com.example.mymovieapp.models.Movie
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var gridView: GridView
+    private lateinit var favorites: List<Movie>
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        profileViewModel =
-                ViewModelProvider(this).get(ProfileViewModel::class.java)
+
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        profileViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+
+        gridView = root.findViewById(R.id.gridViewFavorites)
+
+        var gridAdapter: GridViewAdapter = GridViewAdapter(requireContext(), favorites)
+
+        gridView.adapter = gridAdapter
+
         return root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        favorites = DataManager.favorites
     }
 }

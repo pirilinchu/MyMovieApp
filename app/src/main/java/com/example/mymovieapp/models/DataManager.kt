@@ -8,12 +8,35 @@ object DataManager {
     var moviesPopular = ArrayList<Movie>()
     var moviesIncoming = ArrayList<Movie>()
     var series = ArrayList<Movie>()
+    var favorites = ArrayList<Movie>()
 
     init {
         initializeMoviesNow()
         initializeMoviesPopular()
         initializeMoviesIncoming()
         initializeSeries()
+        initializeFavorites()
+    }
+
+    private fun initializeFavorites() {
+        var movie: Movie = Movie("movie43", R.drawable.poster)
+        favorites.add(movie)
+        movie = Movie("movie2", R.drawable.poster)
+        favorites.add(movie)
+        movie = Movie("movie3", R.drawable.poster)
+        favorites.add(movie)
+        movie = Movie("movie4", R.drawable.poster2)
+        favorites.add(movie)
+        movie = Movie("movie5", R.drawable.poster2)
+        favorites.add(movie)
+        movie = Movie("movie2", R.drawable.poster)
+        favorites.add(movie)
+        movie = Movie("movie3", R.drawable.poster)
+        favorites.add(movie)
+        movie = Movie("movie4", R.drawable.poster2)
+        favorites.add(movie)
+        movie = Movie("movie5", R.drawable.poster2)
+        favorites.add(movie)
     }
 
     private fun initializeSeries() {
