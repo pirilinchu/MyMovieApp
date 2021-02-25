@@ -15,7 +15,9 @@ import com.example.mymovieapp.RecyclerViewSeriesAdapter
 import com.example.mymovieapp.models.DataManager
 import com.example.mymovieapp.models.Movie
 import com.example.mymovieapp.models.fromResultToMovie
+import com.example.mymovieapp.models.fromSerieResultToMovie
 import com.example.mymovieapp.modelsApi.ApiResponse
+import com.example.mymovieapp.modelsApi.ApiResponseSerie
 import com.example.mymovieapp.services.MoviesApi
 import com.example.mymovieapp.services.ServiceBuilder
 import retrofit2.Call
@@ -45,7 +47,36 @@ class TvFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(DataManager.series.size == 0) getShows()
         series = DataManager.series
     }
 
+    private fun getShows() {
+        var moviesService = ServiceBuilder.buildService(MoviesApi::class.java)
+        var call = moviesService.getSeries()
+        var series = ArrayList<Movie>()
+
+        call.enqueue(object : Callback<ApiResponseSerie> {
+            override fun onResponse(
+                call: Call<ApiResponseSerie>,
+                response: Response<ApiResponseSerie>
+            ) {
+                Toast.makeText(activity, "Ok", Toast.LENGTH_SHORT).show()
+                var response = response.body()
+                for (i in response!!.results) {
+                    series.add(fromSerieResultToMovie(i))
+                }
+                DataManager.series = series
+
+                var recyclerViewAdapter: RecyclerViewSeriesAdapter = RecyclerViewSeriesAdapter(requireContext(), series)
+                recyclerViewSeries.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                recyclerViewSeries.adapter = recyclerViewAdapter
+            }
+
+            override fun onFailure(call: Call<ApiResponseSerie>, t: Throwable) {
+                Toast.makeText(activity, t.message, Toast.LENGTH_SHORT).show()
+                Log.d("tag", t.message.toString())
+            }
+        })
+    }
 }
