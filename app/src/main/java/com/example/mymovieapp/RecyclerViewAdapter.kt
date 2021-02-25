@@ -26,7 +26,7 @@ class RecyclerViewAdapter(
             movieTitle = itemView.findViewById(R.id.cardTitleId)
             itemView.setOnClickListener{
                 val intent = Intent(context, MovieActivity::class.java)
-                intent.putExtra("movie", movies[moviePosition])
+                intent.putExtra("movie", movies[moviePosition].Id)
                 context.startActivity(intent)
             }
         }
