@@ -1,15 +1,15 @@
 package com.example.mymovieapp
 
 import android.content.Context
-import android.util.Log
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.models.Movie
+import com.squareup.picasso.Picasso
 
 class RecyclerViewAdapter(
     private val context: Context,
@@ -19,14 +19,15 @@ class RecyclerViewAdapter(
     inner class ViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
         var movieImage: ImageView
         var movieTitle : TextView
+        var moviePosition = 0
 
         init {
             movieImage = itemView.findViewById(R.id.cardImageId)
             movieTitle = itemView.findViewById(R.id.cardTitleId)
             itemView.setOnClickListener{
-                val toast = Toast.makeText(context, "Clicked Item", Toast.LENGTH_SHORT)
-                toast.show()
-                Log.d("Message", "Working")
+                val intent = Intent(context, MovieActivity::class.java)
+                intent.putExtra("movie", movies[moviePosition])
+                context.startActivity(intent)
             }
         }
     }
@@ -43,6 +44,8 @@ class RecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movieTitle.text = movies[position].Title
-        holder.movieImage.setImageResource(movies[position].Image!!)
+//        holder.movieImage.setImageResource(movies[position].Image!!)
+        Picasso.get().load(movies[position].Image).into(holder.movieImage)
+        holder.moviePosition = position
     }
 }

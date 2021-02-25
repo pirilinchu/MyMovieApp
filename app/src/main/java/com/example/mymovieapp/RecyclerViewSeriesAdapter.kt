@@ -1,6 +1,7 @@
 package com.example.mymovieapp
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.models.Movie
+import com.squareup.picasso.Picasso
 
 class RecyclerViewSeriesAdapter(
     private val context: Context,
@@ -19,14 +21,16 @@ class RecyclerViewSeriesAdapter(
     inner class ViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
         var serieImage: ImageView
         var serieTitle : TextView
+        var seriePosition : Int
 
         init {
             serieImage = itemView.findViewById(R.id.cardSerieImageId)
             serieTitle = itemView.findViewById(R.id.cardSerieTitleId)
+            seriePosition = 0
             itemView.setOnClickListener{
-                val toast = Toast.makeText(context, "Clicked Item", Toast.LENGTH_SHORT)
-                toast.show()
-                Log.d("Message", "Working")
+                val intent = Intent(context, MovieActivity::class.java)
+                intent.putExtra("movie", series[seriePosition])
+                context.startActivity(intent)
             }
         }
     }
@@ -43,6 +47,8 @@ class RecyclerViewSeriesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.serieTitle.text = series[position].Title
-        holder.serieImage.setImageResource(series[position].Image!!)
+//        holder.serieImage.setImageResource(series[position].Image!!)
+        Picasso.get().load(series[position].Image).into(holder.serieImage)
+        holder.seriePosition = position
     }
 }
