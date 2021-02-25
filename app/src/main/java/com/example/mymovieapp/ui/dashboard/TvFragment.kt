@@ -61,7 +61,6 @@ class TvFragment : Fragment() {
                 call: Call<ApiResponseSerie>,
                 response: Response<ApiResponseSerie>
             ) {
-                Toast.makeText(activity, "Ok", Toast.LENGTH_SHORT).show()
                 var response = response.body()
                 for (i in response!!.results) {
                     series.add(fromSerieResultToMovie(i))

@@ -80,7 +80,6 @@ class MoviesFragment : Fragment() {
                 call: Call<ApiResponse>,
                 response: Response<ApiResponse>
             ) {
-                Toast.makeText(activity, "Ok", Toast.LENGTH_SHORT).show()
                 var response = response.body()
                 for (i in response!!.results){
                     moviesIncoming.add(fromResultToMovie(i))
@@ -108,7 +107,6 @@ class MoviesFragment : Fragment() {
                 call: Call<ApiResponse>,
                 response: Response<ApiResponse>
             ) {
-                Toast.makeText(activity, "Ok", Toast.LENGTH_SHORT).show()
                 var response = response.body()
                 for (i in response!!.results){
                     moviesPopular.add(fromResultToMovie(i))
@@ -136,7 +134,6 @@ class MoviesFragment : Fragment() {
                 call: Call<ApiResponse>,
                 response: Response<ApiResponse>
             ) {
-                Toast.makeText(activity, "Ok", Toast.LENGTH_SHORT).show()
                 var response = response.body()
                 for (i in response!!.results){
                     moviesNow.add(fromResultToMovie(i))
@@ -155,23 +152,3 @@ class MoviesFragment : Fragment() {
     }
 
 }
-
-//class MoviesFragment : Fragment() {
-//
-//    private lateinit var moviesViewModel: MoviesViewModel
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        moviesViewModel =
-//            ViewModelProvider(this).get(MoviesViewModel::class.java)
-//        val root = inflater.inflate(R.layout.fragment_movies, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_home)
-//        moviesViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-//        })
-//        return root
-//    }
-//}

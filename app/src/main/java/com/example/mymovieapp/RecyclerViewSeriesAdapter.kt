@@ -29,7 +29,7 @@ class RecyclerViewSeriesAdapter(
             seriePosition = 0
             itemView.setOnClickListener{
                 val intent = Intent(context, MovieActivity::class.java)
-                intent.putExtra("movie", series[seriePosition])
+                intent.putExtra("serie", series[seriePosition].Id)
                 context.startActivity(intent)
             }
         }

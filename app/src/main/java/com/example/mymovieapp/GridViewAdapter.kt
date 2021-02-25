@@ -27,7 +27,7 @@ class GridViewAdapter(
         Picasso.get().load(item.Image).into(movieImage)
         view.setOnClickListener{
             val intent = Intent(context, MovieActivity::class.java)
-            intent.putExtra("movie", movies[position])
+            intent.putExtra("movie", movies[position].Id)
             context.startActivity(intent)
         }
         return view
