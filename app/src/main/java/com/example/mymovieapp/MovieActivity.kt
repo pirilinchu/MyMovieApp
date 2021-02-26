@@ -40,6 +40,8 @@ class MovieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
 
+        this.getSupportActionBar()?.hide();
+
         val movieId = intent.getIntExtra("movie", -1)
         if(movieId != -1) getMovieById(movieId)
 
@@ -61,6 +63,11 @@ class MovieActivity : AppCompatActivity() {
                         database.favorites().insertMovie(fromDetailSerieToMovie(currentSerie))
                 }
             }
+        }
+        button.setOnLongClickListener{
+//            database.favorites().deleteMovie(fromDetailMovieToMovie(currentMovie))
+            Toast.makeText(this, "Removed", Toast.LENGTH_SHORT).show()
+            true
         }
     }
 

@@ -20,6 +20,7 @@ class GridViewAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view: View = View.inflate(context, R.layout.movie_small_card, null)
         var movieImage: ImageView
+        val database = DataBase.getDataBase(context)
 
         movieImage = view.findViewById(R.id.cardImageSmallId)
 
@@ -31,6 +32,7 @@ class GridViewAdapter(
             intent.putExtra("movie", movies[position].Id)
             context.startActivity(intent)
         }
+
         return view
     }
 
