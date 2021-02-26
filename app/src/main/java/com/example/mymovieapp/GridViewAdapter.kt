@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mymovieapp.db.DataBase
 import com.example.mymovieapp.models.Movie
 import com.squareup.picasso.Picasso
 

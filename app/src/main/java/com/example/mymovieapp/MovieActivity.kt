@@ -58,7 +58,7 @@ class MovieActivity : AppCompatActivity() {
             }
             if(serieId != -1) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    database.favorites().insertMovie(fromDetailSerieToMovie(currentSerie))
+                        database.favorites().insertMovie(fromDetailSerieToMovie(currentSerie))
                 }
             }
         }

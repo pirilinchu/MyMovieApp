@@ -3,4 +3,14 @@
     <string name="title_home">Movies</string>
     <string name="title_dashboard">TV</string>
     <string name="title_notifications">Profile</string>
+    <string name="genres">Genres</string>
+    <string name="rating">Rating</string>
+    <string name="director">Director</string>
+    <string name="cast">Cast</string>
+    <string name="directorText">Director goes here</string>
+    <string name="now">Now</string>
+    <string name="popular">Popular</string>
+    <string name="incoming">Incoming</string>
+    <string name="santiago_mendoza" translatable="false">Santiago Mendoza</string>
+    <string name="movietitle">MovieTitle</string>
 </resources>

@@ -25,13 +25,12 @@
             android:src="@drawable/poster" />
 
         <TextView
+            android:id="@+id/cardSerieTitleId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/cardSerieTitleId"
-            android:textColor="@color/black"
-            android:text="SerieTitle"
+            android:layout_gravity="center_horizontal"
             android:textAlignment="center"
-            android:layout_gravity="center_horizontal"/>
+            android:textColor="@color/black" />
     </LinearLayout>
 
 

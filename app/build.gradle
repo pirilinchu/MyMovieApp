@@ -65,6 +65,7 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //db
     def room_version = "2.2.6"
 
     implementation "androidx.room:room-runtime:$room_version"

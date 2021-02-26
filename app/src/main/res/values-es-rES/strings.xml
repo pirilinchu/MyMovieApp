@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyMovieApp</string>
+    <string name="title_home">Peliculas</string>
+    <string name="title_dashboard">Series</string>
+    <string name="title_notifications">Perfil</string>
+    <string name="genres">Generos</string>
+    <string name="rating">Puntuacion</string>
+    <string name="director">Director</string>
+    <string name="cast">Reparto</string>
+    <string name="directorText">Director</string>
+    <string name="now">Estrenos</string>
+    <string name="popular">Populares</string>
+    <string name="incoming">A Estrenar</string>
+    <string name="movietitle">Titulo</string>
+</resources>

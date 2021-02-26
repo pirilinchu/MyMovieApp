@@ -14,9 +14,9 @@ import java.io.Serializable
 data class Movie (
     var Title: String? = null,
     var Image: String? = null,
+    @PrimaryKey()
     var Id: Int? = null,
     var Type: Char? = null,
-    @PrimaryKey(autoGenerate = true)
     var IdMD: Int = 0
 ) : Serializable{
 
