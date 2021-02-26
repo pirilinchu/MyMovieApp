@@ -1,6 +1,7 @@
 package com.example.mymovieapp.models
 
 import com.example.mymovieapp.R
+import com.example.mymovieapp.db.DataBase
 
 object DataManager {
 
@@ -17,6 +18,7 @@ object DataManager {
 //        initializeSeries()
 //        initializeFavorites()
     }
+
 
 //    private fun initializeFavorites() {
 //        var movie: Movie = Movie("movie43", R.drawable.poster)

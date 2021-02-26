@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.GridViewAdapter
 import com.example.mymovieapp.R
 import com.example.mymovieapp.RecyclerViewSeriesAdapter
+import com.example.mymovieapp.db.DataBase
 import com.example.mymovieapp.models.DataManager
 import com.example.mymovieapp.models.Movie
 
@@ -32,9 +33,16 @@ class ProfileFragment : Fragment() {
 
         gridView = root.findViewById(R.id.gridViewFavorites)
 
-        var gridAdapter: GridViewAdapter = GridViewAdapter(requireContext(), favorites)
+        val database = DataBase.getDataBase(requireContext())
 
-        gridView.adapter = gridAdapter
+        database.favorites().getAllMovies().observe(viewLifecycleOwner, Observer {
+            favorites = it
+            DataManager.favorites = it.toCollection(ArrayList())
+
+            var gridAdapter: GridViewAdapter = GridViewAdapter(requireContext(), favorites)
+
+            gridView.adapter = gridAdapter
+        })
 
         return root
     }
