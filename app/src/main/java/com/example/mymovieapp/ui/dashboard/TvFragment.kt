@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.R
@@ -27,55 +29,31 @@ import retrofit2.Response
 
 class TvFragment : Fragment() {
 
-    private lateinit var recyclerViewSeries: RecyclerView
-    private lateinit var series: List<Movie>
+    private lateinit var viewModel: TvViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var root: View = inflater.inflate(R.layout.fragment_tv, container, false)
-        recyclerViewSeries = root.findViewById(R.id.recyclerViewSeries)
+        viewModel = ViewModelProvider(this).get(TvViewModel::class.java)
 
-        var recyclerViewAdapter: RecyclerViewSeriesAdapter = RecyclerViewSeriesAdapter(requireContext(), series)
+        loadTvShows()
 
-        recyclerViewSeries.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        recyclerViewSeries.adapter = recyclerViewAdapter
+        val root: View = inflater.inflate(R.layout.fragment_tv, container, false)
+
+        val recyclerViewSeries: RecyclerView = root.findViewById(R.id.recyclerViewSeries)
+
+        viewModel.tvShows.observe(viewLifecycleOwner, Observer {
+            val recyclerViewSeriesAdapter: RecyclerViewSeriesAdapter = RecyclerViewSeriesAdapter(requireContext(), it)
+            recyclerViewSeries.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            recyclerViewSeries.adapter = recyclerViewSeriesAdapter
+        })
+
         return root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if(DataManager.series.size == 0) getShows()
-        series = DataManager.series
-    }
-
-    private fun getShows() {
-        var moviesService = ServiceBuilder.buildService(MoviesApi::class.java)
-        var call = moviesService.getSeries()
-        var series = ArrayList<Movie>()
-
-        call.enqueue(object : Callback<ApiResponseSerie> {
-            override fun onResponse(
-                call: Call<ApiResponseSerie>,
-                response: Response<ApiResponseSerie>
-            ) {
-                var response = response.body()
-                for (i in response!!.results) {
-                    series.add(fromSerieResultToMovie(i))
-                }
-                DataManager.series = series
-
-                var recyclerViewAdapter: RecyclerViewSeriesAdapter = RecyclerViewSeriesAdapter(requireContext(), series)
-                recyclerViewSeries.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-                recyclerViewSeries.adapter = recyclerViewAdapter
-            }
-
-            override fun onFailure(call: Call<ApiResponseSerie>, t: Throwable) {
-                Toast.makeText(activity, t.message, Toast.LENGTH_SHORT).show()
-                Log.d("tag", t.message.toString())
-            }
-        })
+    private fun loadTvShows() {
+        viewModel.loadTvShows()
     }
 }
