@@ -8,7 +8,6 @@ import android.widget.GridView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.mymovieapp.GridViewAdapter
 import com.example.mymovieapp.R
 
 class ProfileFragment : Fragment() {

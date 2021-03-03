@@ -2,30 +2,14 @@ package com.example.mymovieapp.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.R
-import com.example.mymovieapp.RecyclerViewAdapter
-import com.example.mymovieapp.RecyclerViewChipsAdapter
-import com.example.mymovieapp.data.Repository
-import com.example.mymovieapp.db.DataBase
-import com.example.mymovieapp.models.*
-import com.example.mymovieapp.modelsApi.Genre
-import com.example.mymovieapp.modelsApi.MovieDetail
-import com.example.mymovieapp.modelsApi.MovieIMDB
-import com.example.mymovieapp.modelsApi.SerieDetail
-import com.example.mymovieapp.services.MoviesApi
-import com.example.mymovieapp.services.ServiceBuilder
-import com.example.mymovieapp.ui.movies.MoviesViewModel
+import com.example.mymovieapp.data.modelsApi.MovieIMDB
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -34,9 +18,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MovieActivity : AppCompatActivity() {
 

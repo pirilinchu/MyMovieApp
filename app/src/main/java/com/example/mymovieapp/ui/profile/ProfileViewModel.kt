@@ -3,8 +3,8 @@ package com.example.mymovieapp.ui.profile
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.mymovieapp.data.Repository
-import com.example.mymovieapp.db.DataBase
-import com.example.mymovieapp.models.Movie
+import com.example.mymovieapp.data.db.DataBase
+import com.example.mymovieapp.data.models.Movie
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(app: Application) : AndroidViewModel(app) {

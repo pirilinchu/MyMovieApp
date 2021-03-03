@@ -6,10 +6,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mymovieapp.data.Repository
-import com.example.mymovieapp.db.DataBase
-import com.example.mymovieapp.models.Movie
-import com.example.mymovieapp.models.fromResultToMovie
-import com.example.mymovieapp.modelsApi.ApiResponse
+import com.example.mymovieapp.data.db.DataBase
+import com.example.mymovieapp.data.models.Movie
+import com.example.mymovieapp.data.models.fromResultToMovie
+import com.example.mymovieapp.data.modelsApi.ApiResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
