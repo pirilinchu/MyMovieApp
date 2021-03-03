@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mymovieapp.data.Repository
 import com.example.mymovieapp.db.DataBase
 import com.example.mymovieapp.models.*
 import com.example.mymovieapp.modelsApi.Genre
@@ -34,7 +35,12 @@ class MovieActivity : AppCompatActivity() {
     private lateinit var currentMovieIMDB: MovieIMDB
     private lateinit var currentSerie: SerieDetail
     private lateinit var recyclerViewTags: RecyclerView
-//    private lateinit var tags: List<String>
+    private val repository: Repository
+
+    init {
+        val dao = DataBase.getDataBase(this).favorites()
+        repository = Repository(dao)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,19 +54,17 @@ class MovieActivity : AppCompatActivity() {
         val serieId = intent.getIntExtra("serie", -1)
         if(serieId != -1) getSerieById(serieId)
 
-        val database = DataBase.getDataBase(this)
-
         val button: FloatingActionButton = findViewById(R.id.floatingActionButton)
 
         button.setOnClickListener{
             if(movieId != -1) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    database.favorites().insertMovie(fromDetailMovieToMovie(currentMovie))
+                    repository.insert(fromDetailMovieToMovie(currentMovie))//.favorites().insertMovie(fromDetailMovieToMovie(currentMovie))
                 }
             }
             if(serieId != -1) {
                 CoroutineScope(Dispatchers.IO).launch {
-                        database.favorites().insertMovie(fromDetailSerieToMovie(currentSerie))
+                    repository.insert(fromDetailSerieToMovie(currentSerie))//database.favorites().insertMovie(fromDetailSerieToMovie(currentSerie))
                 }
             }
         }
