@@ -2,14 +2,12 @@ package com.example.mymovieapp
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.db.DataBase
 import com.example.mymovieapp.models.Movie
+import com.example.mymovieapp.ui.detail.MovieActivity
 import com.squareup.picasso.Picasso
 
 class GridViewAdapter(

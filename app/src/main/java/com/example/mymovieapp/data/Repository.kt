@@ -8,6 +8,8 @@ import com.example.mymovieapp.models.Movie
 import com.example.mymovieapp.models.fromSerieResultToMovie
 import com.example.mymovieapp.modelsApi.ApiResponse
 import com.example.mymovieapp.modelsApi.ApiResponseSerie
+import com.example.mymovieapp.modelsApi.MovieDetail
+import com.example.mymovieapp.modelsApi.SerieDetail
 import com.example.mymovieapp.services.MoviesApi
 import com.example.mymovieapp.services.ServiceBuilder
 import retrofit2.Call
@@ -40,5 +42,13 @@ class Repository (private val movieDao: MovieDao) {
 
     fun getMoviesIncoming(): Call<ApiResponse> {
         return moviesService.getMoviesIncoming()
+    }
+
+    fun getMovieById(id: Int): Call<MovieDetail> {
+        return moviesService.getMovieById(id)
+    }
+
+    fun getSerieById(id: Int): Call<SerieDetail> {
+        return moviesService.getSerieById(id)
     }
 }

@@ -1,9 +1,6 @@
-package com.example.mymovieapp.ui.notifications
+package com.example.mymovieapp.ui.profile
 
 import android.app.Application
-import android.content.Context
-import android.provider.ContactsContract
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.*
 import com.example.mymovieapp.data.Repository
 import com.example.mymovieapp.db.DataBase

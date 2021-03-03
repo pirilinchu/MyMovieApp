@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.models.Movie
+import com.example.mymovieapp.ui.detail.MovieActivity
 import com.squareup.picasso.Picasso
 
 class RecyclerViewAdapter(
