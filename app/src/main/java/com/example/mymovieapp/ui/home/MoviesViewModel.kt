@@ -1,12 +1,16 @@
 package com.example.mymovieapp.ui.home
 
+import android.app.Application
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymovieapp.RecyclerViewAdapter
+import com.example.mymovieapp.data.Repository
+import com.example.mymovieapp.db.DataBase
 import com.example.mymovieapp.models.DataManager
 import com.example.mymovieapp.models.Movie
 import com.example.mymovieapp.models.fromResultToMovie
@@ -17,8 +21,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MoviesViewModel : ViewModel() {
+class MoviesViewModel(app: Application) : AndroidViewModel(app) {
 
+    private val repository: Repository
     private val _moviesNow: MutableLiveData<List<Movie>> = MutableLiveData()
     private val _moviesPopular: MutableLiveData<List<Movie>> = MutableLiveData()
     private val _moviesIncoming: MutableLiveData<List<Movie>> = MutableLiveData()
@@ -31,9 +36,13 @@ class MoviesViewModel : ViewModel() {
     val moviesIncoming: LiveData<List<Movie>> = _moviesIncoming
     val status: LiveData<Boolean> = _status
 
+    init {
+        val dao = DataBase.getDataBase(app).favorites()
+        repository = Repository(dao)
+    }
+
     fun getMoviesNow(){
-        var moviesService = ServiceBuilder.buildService(MoviesApi::class.java)
-        var call = moviesService.getMoviesNow()
+        var call = repository.getMoviesNow()
         var moviesNow: List<Movie> = emptyList()
         call.enqueue(object : Callback<ApiResponse> {
             override fun onResponse(
@@ -55,8 +64,7 @@ class MoviesViewModel : ViewModel() {
     }
 
     fun getMoviesIncoming() {
-        var moviesService = ServiceBuilder.buildService(MoviesApi::class.java)
-        var call = moviesService.getMoviesIncoming()
+        var call = repository.getMoviesIncoming()
         var moviesIncoming: List<Movie> = emptyList()
 
         call.enqueue(object : Callback<ApiResponse> {
@@ -79,8 +87,7 @@ class MoviesViewModel : ViewModel() {
     }
 
     fun getMoviesPopular() {
-        var moviesService = ServiceBuilder.buildService(MoviesApi::class.java)
-        var call = moviesService.getMoviesPopular()
+        var call = repository.getMoviesPopular()
         var moviesPopular: List<Movie> = emptyList()
 
         call.enqueue(object : Callback<ApiResponse> {

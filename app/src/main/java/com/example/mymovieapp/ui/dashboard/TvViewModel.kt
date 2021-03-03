@@ -1,12 +1,16 @@
 package com.example.mymovieapp.ui.dashboard
 
+import android.app.Application
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymovieapp.RecyclerViewSeriesAdapter
+import com.example.mymovieapp.data.Repository
+import com.example.mymovieapp.db.DataBase
 import com.example.mymovieapp.models.DataManager
 import com.example.mymovieapp.models.Movie
 import com.example.mymovieapp.models.fromSerieResultToMovie
@@ -17,8 +21,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TvViewModel : ViewModel() {
+class TvViewModel(app: Application) : AndroidViewModel(app) {
 
+    private val repository: Repository
     private val _tvShows: MutableLiveData<List<Movie>> = MutableLiveData()
     private val _status: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
         value = false
@@ -27,9 +32,13 @@ class TvViewModel : ViewModel() {
     val tvShows: LiveData<List<Movie>> = _tvShows
     val status: LiveData<Boolean> = _status
 
+    init {
+        val dao = DataBase.getDataBase(app).favorites()
+        repository = Repository(dao)
+    }
+
     fun loadTvShows() {
-        var moviesService = ServiceBuilder.buildService(MoviesApi::class.java)
-        var call = moviesService.getSeries()
+        var call = repository.getTvShows()
         var tvShows: List<Movie> = emptyList()
 
         call.enqueue(object : Callback<ApiResponseSerie> {
