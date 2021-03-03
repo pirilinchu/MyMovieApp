@@ -16,7 +16,7 @@ interface MoviesApi {
     @GET("movie/upcoming?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US&page=1")
     fun getMoviesIncoming(): Call<ApiResponse>
 
-    @GET("tv/top_rated?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US&page=1")
+    @GET("tv/popular?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US&page=1")
     fun getSeries(): Call<ApiResponseSerie>
 
     @GET("movie/{id}?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US&page=1")
@@ -25,6 +25,14 @@ interface MoviesApi {
     @GET("tv/{id}?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US&page=1")
     fun getSerieById(@Path("id") id: Int): Call<SerieDetail>
 
-    @GET("apikey=7ad828e9")
-    fun getMovieFromIMDB(@Query("i") i: String): Call<MovieIMDB>
+    @GET("movie/{id}/credits?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US")
+    fun getMovieCredits(@Path("id") id: Int): Call<MovieCredits>
+
+    @GET("tv/{id}/credits?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US")
+    fun getSerieCredits(@Path("id") id: Int): Call<MovieCredits>
+
+    @GET("/")
+    fun getMovieFromIMDB(
+            @Query("i") i: String,
+            @Query("apikey") apikey: String): Call<MovieIMDB>
 }
