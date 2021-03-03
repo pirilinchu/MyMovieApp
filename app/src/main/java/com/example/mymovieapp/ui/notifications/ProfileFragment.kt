@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,36 +23,26 @@ import com.example.mymovieapp.models.Movie
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var gridView: GridView
-    private lateinit var favorites: List<Movie>
+    private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        gridView = root.findViewById(R.id.gridViewFavorites)
+        var gridView: GridView = root.findViewById(R.id.gridViewFavorites)
 
-        val database = DataBase.getDataBase(requireContext())
-
-        database.favorites().getAllMovies().observe(viewLifecycleOwner, Observer {
-            favorites = it
-            DataManager.favorites = it.toCollection(ArrayList())
-
-            var gridAdapter: GridViewAdapter = GridViewAdapter(requireContext(), favorites)
-
+        viewModel.favorites.observe(viewLifecycleOwner, Observer {
+            var gridAdapter: GridViewAdapter = GridViewAdapter(requireContext(), it)
             gridView.adapter = gridAdapter
         })
 
+
+
         return root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        favorites = DataManager.favorites
     }
 }
