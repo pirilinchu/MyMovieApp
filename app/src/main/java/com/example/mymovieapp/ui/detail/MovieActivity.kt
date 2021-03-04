@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 
 class MovieActivity : AppCompatActivity() {
 
@@ -49,6 +50,7 @@ class MovieActivity : AppCompatActivity() {
         val textViewRating: TextView = findViewById(R.id.textViewDetailRating)
         val recyclerViewTags: RecyclerView = findViewById(R.id.recyclerViewDetailGenres)
         val recycerViewCast: RecyclerView = findViewById(R.id.recyclerViewCast)
+        val textViewDirector: TextView = findViewById(R.id.textViewDirector)
 
         viewModel.title.observe(this, Observer {
             textViewTitle.text = it
@@ -64,6 +66,10 @@ class MovieActivity : AppCompatActivity() {
 
         viewModel.rating.observe(this, Observer {
             textViewRating.text = it.toString()
+        })
+
+        viewModel.director.observe(this, Observer {
+            textViewDirector.text = it
         })
 
         viewModel.tags.observe(this, Observer {

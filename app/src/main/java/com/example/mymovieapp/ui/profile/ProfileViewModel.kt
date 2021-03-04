@@ -10,28 +10,12 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repository: Repository
-    private val _status: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
-        value = false
-    }
 
     val favorites: LiveData<List<Movie>>
-    val status: LiveData<Boolean> = _status
 
     init {
         val dao = DataBase.getDataBase(app).favorites()
         repository = Repository(dao)
         favorites = repository.favoriteMovies
-    }
-
-    fun insert(movie: Movie) {
-        viewModelScope.launch {
-            repository.insert(movie)
-        }
-    }
-
-    fun delete(movie: Movie) {
-        viewModelScope.launch {
-            repository.delete(movie)
-        }
     }
 }

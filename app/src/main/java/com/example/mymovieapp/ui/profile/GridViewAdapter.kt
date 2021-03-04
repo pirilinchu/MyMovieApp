@@ -19,12 +19,10 @@ class GridViewAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view: View = View.inflate(context, R.layout.movie_small_card, null)
         var movieImage: ImageView
-        val database = DataBase.getDataBase(context)
 
         movieImage = view.findViewById(R.id.cardImageSmallId)
 
         var item: Movie = movies.get(position)
-//        movieImage.setImageResource(item.Image!!)
         Picasso.get().load(item.Image).into(movieImage)
         view.setOnClickListener{
             val intent = Intent(context, MovieActivity::class.java)
