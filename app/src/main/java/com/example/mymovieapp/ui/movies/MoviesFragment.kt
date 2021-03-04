@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.R
+import koleton.api.hideSkeleton
+import koleton.api.loadSkeleton
 import kotlinx.coroutines.delay
 
 class MoviesFragment : Fragment() {
@@ -52,8 +54,11 @@ class MoviesFragment : Fragment() {
 
         viewModel.status.observe(viewLifecycleOwner, Observer {
             it?.let {
-                viewModel._status.value = null
-                Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                if(it)
+                {
+                    viewModel._status.value = null
+                    Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
             }
         })
 

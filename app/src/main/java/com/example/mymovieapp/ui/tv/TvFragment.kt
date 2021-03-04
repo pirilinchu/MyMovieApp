@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.R
+import koleton.api.hideSkeleton
+import koleton.api.loadSkeleton
 
 
 class TvFragment : Fragment() {
@@ -30,6 +32,8 @@ class TvFragment : Fragment() {
 
         val recyclerViewSeries: RecyclerView = root.findViewById(R.id.recyclerViewSeries)
 
+        recyclerViewSeries.loadSkeleton(R.layout.movie_card)
+
         viewModel.tvShows.observe(viewLifecycleOwner, Observer {
             val recyclerViewSeriesAdapter: RecyclerViewSeriesAdapter = RecyclerViewSeriesAdapter(requireContext(), it)
             recyclerViewSeries.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
@@ -38,8 +42,22 @@ class TvFragment : Fragment() {
 
         viewModel.status.observe(viewLifecycleOwner, Observer {
             it?.let {
-                viewModel._status.value = null
-                Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                if(it)
+                {
+                    viewModel._status.value = null
+                    Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            if(it)
+            {
+                recyclerViewSeries.loadSkeleton(R.layout.serie_card)
+            }
+            else
+            {
+                recyclerViewSeries.hideSkeleton()
             }
         })
 

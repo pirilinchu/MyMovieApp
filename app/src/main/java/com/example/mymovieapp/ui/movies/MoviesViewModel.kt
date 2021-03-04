@@ -37,6 +37,7 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
     fun getMoviesNow(){
         var call = repository.getMoviesNow()
         var moviesNow: List<Movie> = emptyList()
+
         call.enqueue(object : Callback<ApiResponse> {
             override fun onResponse(
                 call: Call<ApiResponse>,
