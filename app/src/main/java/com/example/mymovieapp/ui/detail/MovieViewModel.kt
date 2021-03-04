@@ -32,6 +32,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
         value = false
     }
     val _isLoading: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { value = true }
+    val _videoId: MutableLiveData<String> = MutableLiveData()
 
 
     val currentMovie: LiveData<MovieDetail> =_currentMovie
@@ -46,6 +47,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     val status: LiveData<Boolean> = _status
     val director: LiveData<String> = _director
     val isLoading: LiveData<Boolean> =  _isLoading
+    val videoId: LiveData<String> = _videoId
 
     init {
         val dao = DataBase.getDataBase(app).favorites()
@@ -75,9 +77,46 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                 loadMovieData()
                 loadMovieCredits()
                 loadAditionalInfo()
+                loadMovieTrailer()
             }
 
             override fun onFailure(call: Call<MovieDetail>, t: Throwable) {
+                Log.d("tag", t.message.toString())
+            }
+        })
+    }
+
+    private fun loadMovieTrailer() {
+        var call = repository.getTrailer(currentMovie.value!!.id)
+
+        call.enqueue(object : Callback<MovieTrailers> {
+            override fun onResponse(
+                call: Call<MovieTrailers>,
+                response: Response<MovieTrailers>
+            ) {
+                var movieTrailers: MovieTrailers = response.body()!!
+                _videoId.value = movieTrailers.results[0].key
+            }
+
+            override fun onFailure(call: Call<MovieTrailers>, t: Throwable) {
+                Log.d("tag", t.message.toString())
+            }
+        })
+    }
+
+    private fun loadSerieTrailer() {
+        var call = repository.getTrailerSerie(currentSerie.value!!.id)
+
+        call.enqueue(object : Callback<MovieTrailers> {
+            override fun onResponse(
+                call: Call<MovieTrailers>,
+                response: Response<MovieTrailers>
+            ) {
+                var movieTrailers: MovieTrailers = response.body()!!
+                _videoId.value = movieTrailers.results[0].key
+            }
+
+            override fun onFailure(call: Call<MovieTrailers>, t: Throwable) {
                 Log.d("tag", t.message.toString())
             }
         })
@@ -94,6 +133,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                 _currentSerie.value = response.body()
                 loadSerieData()
                 loadSerieCredits()
+                loadSerieTrailer()
             }
 
             override fun onFailure(call: Call<SerieDetail>, t: Throwable) {

@@ -1,5 +1,6 @@
 package com.example.mymovieapp.ui.detail
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
@@ -17,6 +18,7 @@ import com.example.mymovieapp.R
 import com.example.mymovieapp.baseImageUrl
 import com.example.mymovieapp.data.modelsApi.MovieIMDB
 import com.example.mymovieapp.ui.movies.RecyclerViewActorsAdapter
+import com.example.mymovieapp.ui.youtube.YoutubePlayer
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -24,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import koleton.api.hideSkeleton
 import koleton.api.loadSkeleton
+import kotlinx.android.synthetic.main.activity_movie.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -127,6 +130,12 @@ class MovieActivity : AppCompatActivity() {
 //            database.favorites().deleteMovie(fromDetailMovieToMovie(currentMovie))
             Toast.makeText(this, "Removed", Toast.LENGTH_SHORT).show()
             true
+        }
+
+        floatingActionButtonYoutube.setOnClickListener {
+            val intent = Intent(this, YoutubePlayer::class.java)
+            intent.putExtra("video", viewModel._videoId.value)
+            startActivity(intent)
         }
     }
 }

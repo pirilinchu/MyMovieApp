@@ -56,4 +56,12 @@ class Repository (private val movieDao: MovieDao) {
     fun getSerieCredits(id: Int): Call<MovieCredits> {
         return moviesService.getSerieCredits(id)
     }
+
+    fun getTrailer(id: Int): Call<MovieTrailers> {
+        return moviesService.getTrailers(id)
+    }
+
+    fun getTrailerSerie(id: Int): Call<MovieTrailers> {
+        return moviesService.getTrailersTv(id)
+    }
 }

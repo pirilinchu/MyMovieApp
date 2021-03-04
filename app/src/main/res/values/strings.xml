@@ -13,4 +13,5 @@
     <string name="incoming">Incoming</string>
     <string name="santiago_mendoza" translatable="false">Santiago Mendoza</string>
     <string name="movietitle">MovieTitle</string>
+    <string name="api_key" translatable="false">AIzaSyBh6ZJU770b5ppTVFcD_j0ezpV-fPjr7iQ</string>
 </resources>
