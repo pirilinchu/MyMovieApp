@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.R
+import com.example.mymovieapp.baseImageUrl
 import com.example.mymovieapp.data.modelsApi.MovieIMDB
 import com.example.mymovieapp.ui.movies.RecyclerViewActorsAdapter
 import com.google.android.flexbox.FlexDirection
@@ -58,7 +59,7 @@ class MovieActivity : AppCompatActivity() {
 
         viewModel.image.observe(this, Observer {
             if (it == "No Image") imageView.setImageResource(R.drawable.place_holder)
-            else Picasso.get().load("https://image.tmdb.org/t/p/w500" + it).into(imageView)
+            else Picasso.get().load(baseImageUrl + it).into(imageView)
         })
 
         viewModel.description.observe(this, Observer {

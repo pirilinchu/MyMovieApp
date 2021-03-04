@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.R
+import com.example.mymovieapp.baseImageUrl
 import com.example.mymovieapp.data.modelsApi.Cast
 import com.example.mymovieapp.data.modelsApi.Crew
 import com.squareup.picasso.Picasso
@@ -44,7 +45,7 @@ class RecyclerViewActorsAdapter(
         var path: String
         if(cast[position].profile_path != null) {
             path = cast[position].profile_path as String
-            Picasso.get().load("https://image.tmdb.org/t/p/w500" + path).into(holder.actorImage)
+            Picasso.get().load(baseImageUrl + path).into(holder.actorImage)
         }
         else {
             holder.actorImage.setImageResource(R.drawable.place_holder)
