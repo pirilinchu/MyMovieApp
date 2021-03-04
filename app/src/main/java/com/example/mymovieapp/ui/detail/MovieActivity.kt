@@ -7,9 +7,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovieapp.R
 import com.example.mymovieapp.data.modelsApi.MovieIMDB
+import com.example.mymovieapp.ui.movies.RecyclerViewActorsAdapter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -45,7 +47,8 @@ class MovieActivity : AppCompatActivity() {
         val imageView: ImageView = findViewById(R.id.imageViewDetailImage)
         val textViewDescription: TextView = findViewById(R.id.textViewDetailDescription)
         val textViewRating: TextView = findViewById(R.id.textViewDetailRating)
-        var recyclerViewTags: RecyclerView = findViewById(R.id.recyclerViewDetailGenres)
+        val recyclerViewTags: RecyclerView = findViewById(R.id.recyclerViewDetailGenres)
+        val recycerViewCast: RecyclerView = findViewById(R.id.recyclerViewCast)
 
         viewModel.title.observe(this, Observer {
             textViewTitle.text = it
@@ -71,6 +74,12 @@ class MovieActivity : AppCompatActivity() {
 
             recyclerViewTags.layoutManager = layoutManager
             recyclerViewTags.adapter = recyclerViewAdapter
+        })
+
+        viewModel.cast.observe(this, Observer {
+            var recyclerViewAdapterCast: RecyclerViewActorsAdapter = RecyclerViewActorsAdapter(applicationContext, it)
+            recycerViewCast.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+            recycerViewCast.adapter = recyclerViewAdapterCast
         })
 
         button.setOnClickListener{

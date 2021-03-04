@@ -9,9 +9,7 @@ import com.example.mymovieapp.data.Repository
 import com.example.mymovieapp.data.db.DataBase
 import com.example.mymovieapp.data.models.fromDetailMovieToMovie
 import com.example.mymovieapp.data.models.fromDetailSerieToMovie
-import com.example.mymovieapp.data.modelsApi.Genre
-import com.example.mymovieapp.data.modelsApi.MovieDetail
-import com.example.mymovieapp.data.modelsApi.SerieDetail
+import com.example.mymovieapp.data.modelsApi.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +24,8 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     private val _image: MutableLiveData<String> = MutableLiveData()
     private val _description: MutableLiveData<String> = MutableLiveData()
     private val _rating: MutableLiveData<Double> = MutableLiveData()
+    private val _currentMovieOMDB: MutableLiveData<MovieIMDB> = MutableLiveData()
+    private val _cast: MutableLiveData<List<Cast>> = MutableLiveData()
 
     val currentMovie: LiveData<MovieDetail> =_currentMovie
     val currentSerie: LiveData<SerieDetail> =_currentSerie
@@ -34,6 +34,8 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     val image: LiveData<String> = _image
     val description: LiveData<String> = _description
     val rating: LiveData<Double> = _rating
+    val currentMovieOMDB: LiveData<MovieIMDB> =_currentMovieOMDB
+    val cast: LiveData<List<Cast>> = _cast
 
     init {
         val dao = DataBase.getDataBase(app).favorites()
@@ -61,6 +63,8 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                 _currentMovie.value = response.body()
                 loadTags(currentMovie.value!!.genres)
                 loadMovieData()
+                loadMovieCredits()
+                loadAditionalInfo()
             }
 
             override fun onFailure(call: Call<MovieDetail>, t: Throwable) {
@@ -79,9 +83,64 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
             ) {
                 _currentSerie.value = response.body()
                 loadSerieData()
+                loadSerieCredits()
             }
 
             override fun onFailure(call: Call<SerieDetail>, t: Throwable) {
+                Log.d("tag", t.message.toString())
+            }
+        })
+    }
+
+    fun loadAditionalInfo() {
+        var call = repository.getAdditionalInfo(currentMovie.value!!.imdb_id)
+
+        call.enqueue(object : Callback<MovieIMDB> {
+            override fun onResponse(
+                    call: Call<MovieIMDB>,
+                    response: Response<MovieIMDB>
+            ) {
+                _currentMovieOMDB.value = response.body()
+                var a = 1
+            }
+
+            override fun onFailure(call: Call<MovieIMDB>, t: Throwable) {
+                Log.d("tag", t.message.toString())
+            }
+        })
+    }
+
+    fun loadMovieCredits() {
+        var call = repository.getMovieCredits(currentMovie.value!!.id)
+
+        call.enqueue(object : Callback<MovieCredits> {
+            override fun onResponse(
+                    call: Call<MovieCredits>,
+                    response: Response<MovieCredits>
+            ) {
+                _cast.value = response.body()?.cast
+                var a = 1
+            }
+
+            override fun onFailure(call: Call<MovieCredits>, t: Throwable) {
+                Log.d("tag", t.message.toString())
+            }
+        })
+    }
+
+    fun loadSerieCredits() {
+        var call = repository.getSerieCredits(currentSerie.value!!.id)
+
+        call.enqueue(object : Callback<MovieCredits> {
+            override fun onResponse(
+                    call: Call<MovieCredits>,
+                    response: Response<MovieCredits>
+            ) {
+                _cast.value = response.body()?.cast
+                var a = 1
+            }
+
+            override fun onFailure(call: Call<MovieCredits>, t: Throwable) {
                 Log.d("tag", t.message.toString())
             }
         })

@@ -1,5 +1,7 @@
 package com.example.mymovieapp.data.services
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -20,11 +22,15 @@ object ServiceBuilder {
         return retrofit as Retrofit
     }
 
-    private fun getClient2(baseUrl: String = "http://www.omdbapi.com/"): Retrofit {
+    private fun getClientOMDB(baseUrl: String = "http://www.omdbapi.com"): Retrofit {
+        val gson: Gson = GsonBuilder()
+                .setLenient()
+                .create()
+
         retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttp)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         return retrofit as Retrofit
     }
@@ -33,7 +39,7 @@ object ServiceBuilder {
         return getClient().create(contract)
     }
 
-    fun <T> buildService2(contract: Class<T>): T {
-        return getClient2().create(contract)
+    fun <T> buildServiceOMDB(contract: Class<T>): T {
+        return getClientOMDB().create(contract)
     }
 }

@@ -3,10 +3,7 @@ package com.example.mymovieapp.data
 import androidx.lifecycle.LiveData
 import com.example.mymovieapp.data.db.MovieDao
 import com.example.mymovieapp.data.models.Movie
-import com.example.mymovieapp.data.modelsApi.ApiResponse
-import com.example.mymovieapp.data.modelsApi.ApiResponseSerie
-import com.example.mymovieapp.data.modelsApi.MovieDetail
-import com.example.mymovieapp.data.modelsApi.SerieDetail
+import com.example.mymovieapp.data.modelsApi.*
 import com.example.mymovieapp.data.services.MoviesApi
 import com.example.mymovieapp.data.services.ServiceBuilder
 import retrofit2.Call
@@ -14,6 +11,7 @@ import retrofit2.Call
 class Repository (private val movieDao: MovieDao) {
     val favoriteMovies: LiveData<List<Movie>> = movieDao.getAllMovies()
     private val moviesService = ServiceBuilder.buildService(MoviesApi::class.java)
+    private val omdbService = ServiceBuilder.buildServiceOMDB(MoviesApi::class.java)
 
     suspend fun insert(movie: Movie) {
         movieDao.insertMovie(movie)
@@ -45,5 +43,17 @@ class Repository (private val movieDao: MovieDao) {
 
     fun getSerieById(id: Int): Call<SerieDetail> {
         return moviesService.getSerieById(id)
+    }
+
+    fun getAdditionalInfo(id: String): Call<MovieIMDB> {
+        return omdbService.getMovieFromIMDB(id, "7ad828e9")
+    }
+
+    fun getMovieCredits(id: Int): Call<MovieCredits> {
+        return moviesService.getMovieCredits(id)
+    }
+
+    fun getSerieCredits(id: Int): Call<MovieCredits> {
+        return moviesService.getSerieCredits(id)
     }
 }
