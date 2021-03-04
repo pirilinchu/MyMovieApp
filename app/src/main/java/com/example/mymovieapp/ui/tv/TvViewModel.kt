@@ -18,7 +18,7 @@ class TvViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repository: Repository
     private val _tvShows: MutableLiveData<List<Movie>> = MutableLiveData()
-    private val _status: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
+    val _status: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
         value = false
     }
 
@@ -40,8 +40,10 @@ class TvViewModel(app: Application) : AndroidViewModel(app) {
                 response: Response<ApiResponseSerie>
             ) {
                 var response = response.body()
-                for (i in response!!.results) {
-                    tvShows = tvShows.plus(fromSerieResultToMovie(i))
+                if(response != null) {
+                    for (i in response.results) {
+                        tvShows = tvShows.plus(fromSerieResultToMovie(i))
+                    }
                 }
                 _tvShows.value = tvShows
             }

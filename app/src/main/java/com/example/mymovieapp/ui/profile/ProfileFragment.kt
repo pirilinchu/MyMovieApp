@@ -30,8 +30,6 @@ class ProfileFragment : Fragment() {
             gridView.adapter = gridAdapter
         })
 
-
-
         return root
     }
 }

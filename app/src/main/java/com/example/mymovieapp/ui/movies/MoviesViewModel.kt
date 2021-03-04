@@ -20,7 +20,7 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
     private val _moviesNow: MutableLiveData<List<Movie>> = MutableLiveData()
     private val _moviesPopular: MutableLiveData<List<Movie>> = MutableLiveData()
     private val _moviesIncoming: MutableLiveData<List<Movie>> = MutableLiveData()
-    private val _status: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
+    val _status: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
         value = false
     }
 
@@ -43,8 +43,10 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
                 response: Response<ApiResponse>
             ) {
                 var response = response.body()
-                for (i in response!!.results){
-                    moviesNow = moviesNow.plus(fromResultToMovie(i))
+                if(response != null) {
+                    for (i in response.results){
+                        moviesNow = moviesNow.plus(fromResultToMovie(i))
+                    }
                 }
                 _moviesNow.value = moviesNow
             }
@@ -66,8 +68,10 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
                 response: Response<ApiResponse>
             ) {
                 var response = response.body()
-                for (i in response!!.results){
-                    moviesIncoming = moviesIncoming.plus(fromResultToMovie(i))
+                if(response != null) {
+                    for (i in response.results){
+                        moviesIncoming = moviesIncoming.plus(fromResultToMovie(i))
+                    }
                 }
                 _moviesIncoming.value = moviesIncoming
             }
@@ -89,8 +93,10 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
                 response: Response<ApiResponse>
             ) {
                 var response = response.body()
-                for (i in response!!.results){
-                    moviesPopular = moviesPopular.plus(fromResultToMovie(i))
+                if(response != null) {
+                    for (i in response!!.results){
+                        moviesPopular = moviesPopular.plus(fromResultToMovie(i))
+                    }
                 }
                 _moviesPopular.value = moviesPopular
             }

@@ -24,8 +24,12 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     private val _image: MutableLiveData<String> = MutableLiveData()
     private val _description: MutableLiveData<String> = MutableLiveData()
     private val _rating: MutableLiveData<Double> = MutableLiveData()
+    private val _director: MutableLiveData<String> = MutableLiveData()
     private val _currentMovieOMDB: MutableLiveData<MovieIMDB> = MutableLiveData()
     private val _cast: MutableLiveData<List<Cast>> = MutableLiveData()
+    val _status: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
+        value = false
+    }
 
     val currentMovie: LiveData<MovieDetail> =_currentMovie
     val currentSerie: LiveData<SerieDetail> =_currentSerie
@@ -36,6 +40,8 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     val rating: LiveData<Double> = _rating
     val currentMovieOMDB: LiveData<MovieIMDB> =_currentMovieOMDB
     val cast: LiveData<List<Cast>> = _cast
+    val status: LiveData<Boolean> = _status
+    val director: LiveData<String> = _director
 
     init {
         val dao = DataBase.getDataBase(app).favorites()
@@ -61,7 +67,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                     response: Response<MovieDetail>
             ) {
                 _currentMovie.value = response.body()
-                loadTags(currentMovie.value!!.genres)
+                loadTags(currentMovie.value?.genres ?: emptyList())
                 loadMovieData()
                 loadMovieCredits()
                 loadAditionalInfo()
@@ -101,7 +107,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                     response: Response<MovieIMDB>
             ) {
                 _currentMovieOMDB.value = response.body()
-                var a = 1
+                _director.value = currentMovieOMDB.value?.Director ?: "No Director"
             }
 
             override fun onFailure(call: Call<MovieIMDB>, t: Throwable) {
@@ -119,7 +125,6 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                     response: Response<MovieCredits>
             ) {
                 _cast.value = response.body()?.cast
-                var a = 1
             }
 
             override fun onFailure(call: Call<MovieCredits>, t: Throwable) {
@@ -156,17 +161,16 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun loadMovieData() {
-        _title.value = currentMovie.value?.original_title
-        _image.value = currentMovie.value?.poster_path
-        _description.value = currentMovie.value?.overview
-        _rating.value = currentMovie.value?.vote_average
+        _title.value = currentMovie.value?.original_title ?: "No Title"
+        _image.value = currentMovie.value?.poster_path ?: "No Image"
+        _description.value = currentMovie.value?.overview ?: "No Description"
+        _rating.value = currentMovie.value?.vote_average ?: 0.0
     }
 
     private fun loadSerieData() {
-        _title.value = currentSerie.value?.original_name
-        _image.value = currentSerie.value?.poster_path
-        _description.value = currentSerie.value?.overview
-        _rating.value = currentSerie.value?.vote_average
+        _title.value = currentSerie.value?.original_name ?: "No Title"
+        _image.value = currentSerie.value?.poster_path ?: "No Image"
+        _description.value = currentSerie.value?.overview ?: "No Description"
+        _rating.value = currentSerie.value?.vote_average ?: 0.0
     }
-
 }
