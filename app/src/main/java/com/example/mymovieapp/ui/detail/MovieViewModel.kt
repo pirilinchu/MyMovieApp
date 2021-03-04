@@ -104,6 +104,24 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
         })
     }
 
+    private fun loadSerieTrailer() {
+        var call = repository.getTrailerSerie(currentSerie.value!!.id)
+
+        call.enqueue(object : Callback<MovieTrailers> {
+            override fun onResponse(
+                call: Call<MovieTrailers>,
+                response: Response<MovieTrailers>
+            ) {
+                var movieTrailers: MovieTrailers = response.body()!!
+                _videoId.value = movieTrailers.results[0].key
+            }
+
+            override fun onFailure(call: Call<MovieTrailers>, t: Throwable) {
+                Log.d("tag", t.message.toString())
+            }
+        })
+    }
+
     fun loadSerie(id: Int){
         var call = repository.getSerieById(id)
 
@@ -115,6 +133,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                 _currentSerie.value = response.body()
                 loadSerieData()
                 loadSerieCredits()
+                loadSerieTrailer()
             }
 
             override fun onFailure(call: Call<SerieDetail>, t: Throwable) {
