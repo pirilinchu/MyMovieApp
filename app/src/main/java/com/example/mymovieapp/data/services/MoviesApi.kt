@@ -35,4 +35,7 @@ interface MoviesApi {
     fun getMovieFromIMDB(
             @Query("i") i: String,
             @Query("apikey") apikey: String): Call<MovieIMDB>
+
+    @GET("movie/{id}/videos?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US")
+    fun getTrailers(@Path("id") id: Int): Call<MovieTrailers>
 }
