@@ -40,12 +40,16 @@ class RecyclerViewActorsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.actorName.text = cast[position]?.name
-//        holder.movieImage.setImageResource(movies[position].Image!!)
 
-        var path = cast[position].profile_path as String
-        if(cast[position].profile_path == null)
-            path = "/wIU675y4dofIDVuhaNWPizJNtep.jpg"
-        Picasso.get().load("https://image.tmdb.org/t/p/w500" + path).into(holder.actorImage)
+        var path: String
+        if(cast[position].profile_path != null) {
+            path = cast[position].profile_path as String
+            Picasso.get().load("https://image.tmdb.org/t/p/w500" + path).into(holder.actorImage)
+        }
+        else {
+            holder.actorImage.setImageResource(R.drawable.place_holder)
+        }
+
         holder.actorPosition = position
     }
 }
