@@ -57,7 +57,8 @@ class MovieActivity : AppCompatActivity() {
         })
 
         viewModel.image.observe(this, Observer {
-            Picasso.get().load("https://image.tmdb.org/t/p/w500" + it).into(imageView)
+            if (it == "No Image") imageView.setImageResource(R.drawable.place_holder)
+            else Picasso.get().load("https://image.tmdb.org/t/p/w500" + it).into(imageView)
         })
 
         viewModel.description.observe(this, Observer {
@@ -65,7 +66,8 @@ class MovieActivity : AppCompatActivity() {
         })
 
         viewModel.rating.observe(this, Observer {
-            textViewRating.text = it.toString()
+            if(it == 0.0) textViewRating.text = "No Rating"
+            else textViewRating.text = it.toString()
         })
 
         viewModel.director.observe(this, Observer {
@@ -91,14 +93,12 @@ class MovieActivity : AppCompatActivity() {
         button.setOnClickListener{
             if(movieId != -1) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    //repository.insert(fromDetailMovieToMovie(currentMovie))//.favorites().insertMovie(fromDetailMovieToMovie(currentMovie))
                     viewModel.insertMovie()
                 }
             }
             if(serieId != -1) {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.insertSerie()
-                    //repository.insert(fromDetailSerieToMovie(currentSerie))//database.favorites().insertMovie(fromDetailSerieToMovie(currentSerie))
                 }
             }
         }
@@ -108,33 +108,4 @@ class MovieActivity : AppCompatActivity() {
             true
         }
     }
-
-
-
-//    private fun getAdditionalInfo(id: String){
-//        var moviesService = ServiceBuilder.buildService2(MoviesApi::class.java)
-//        var call = moviesService.getMovieFromIMDB(id)
-//
-//        call.enqueue(object : Callback<MovieIMDB> {
-//            override fun onResponse(
-//                call: Call<MovieIMDB>,
-//                response: Response<MovieIMDB>
-//            ) {
-//                currentMovieIMDB = response.body() as MovieIMDB
-//                displayAdditionalInfo()
-//            }
-//
-//            override fun onFailure(call: Call<MovieIMDB>, t: Throwable) {
-//                Log.w("MyTag", "requestFailed", t)
-//            }
-//        })
-//    }
-//
-//    private fun displayAdditionalInfo() {
-//        val textViewDirector: TextView = findViewById(R.id.textViewDirector)
-//        textViewDirector.text = currentMovieIMDB.Director
-//
-//        val textViewCast: TextView = findViewById(R.id.textViewCast)
-//        textViewCast.text = currentMovieIMDB.Actors
-//    }
 }

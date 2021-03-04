@@ -67,7 +67,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                     response: Response<MovieDetail>
             ) {
                 _currentMovie.value = response.body()
-                loadTags(currentMovie.value!!.genres)
+                loadTags(currentMovie.value?.genres ?: emptyList())
                 loadMovieData()
                 loadMovieCredits()
                 loadAditionalInfo()
@@ -107,7 +107,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                     response: Response<MovieIMDB>
             ) {
                 _currentMovieOMDB.value = response.body()
-                _director.value = currentMovieOMDB.value?.Director
+                _director.value = currentMovieOMDB.value?.Director ?: "No Director"
             }
 
             override fun onFailure(call: Call<MovieIMDB>, t: Throwable) {
@@ -161,16 +161,16 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun loadMovieData() {
-        _title.value = currentMovie.value?.original_title
-        _image.value = currentMovie.value?.poster_path
-        _description.value = currentMovie.value?.overview
-        _rating.value = currentMovie.value?.vote_average
+        _title.value = currentMovie.value?.original_title ?: "No Title"
+        _image.value = currentMovie.value?.poster_path ?: "No Image"
+        _description.value = currentMovie.value?.overview ?: "No Description"
+        _rating.value = currentMovie.value?.vote_average ?: 0.0
     }
 
     private fun loadSerieData() {
-        _title.value = currentSerie.value?.original_name
-        _image.value = currentSerie.value?.poster_path
-        _description.value = currentSerie.value?.overview
-        _rating.value = currentSerie.value?.vote_average
+        _title.value = currentSerie.value?.original_name ?: "No Title"
+        _image.value = currentSerie.value?.poster_path ?: "No Image"
+        _description.value = currentSerie.value?.overview ?: "No Description"
+        _rating.value = currentSerie.value?.vote_average ?: 0.0
     }
 }
