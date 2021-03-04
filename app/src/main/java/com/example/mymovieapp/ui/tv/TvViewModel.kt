@@ -16,14 +16,17 @@ import retrofit2.Response
 
 class TvViewModel(app: Application) : AndroidViewModel(app) {
 
+
     private val repository: Repository
     private val _tvShows: MutableLiveData<List<Movie>> = MutableLiveData()
     val _status: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
         value = false
     }
+    val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     val tvShows: LiveData<List<Movie>> = _tvShows
     val status: LiveData<Boolean> = _status
+    val isLoading: LiveData<Boolean> =  _isLoading
 
     init {
         val dao = DataBase.getDataBase(app).favorites()
@@ -33,7 +36,7 @@ class TvViewModel(app: Application) : AndroidViewModel(app) {
     fun loadTvShows() {
         var call = repository.getTvShows()
         var tvShows: List<Movie> = emptyList()
-
+        _isLoading.value = true
         call.enqueue(object : Callback<ApiResponseSerie> {
             override fun onResponse(
                 call: Call<ApiResponseSerie>,
@@ -45,6 +48,7 @@ class TvViewModel(app: Application) : AndroidViewModel(app) {
                         tvShows = tvShows.plus(fromSerieResultToMovie(i))
                     }
                 }
+                _isLoading.value = false
                 _tvShows.value = tvShows
             }
 

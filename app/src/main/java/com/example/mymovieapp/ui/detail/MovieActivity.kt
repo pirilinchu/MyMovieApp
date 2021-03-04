@@ -2,9 +2,13 @@ package com.example.mymovieapp.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.LayoutRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +22,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
+import koleton.api.hideSkeleton
+import koleton.api.loadSkeleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +37,7 @@ class MovieActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         viewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
+        viewModel._isLoading.value = true
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
@@ -90,6 +97,19 @@ class MovieActivity : AppCompatActivity() {
             recycerViewCast.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
             recycerViewCast.adapter = recyclerViewAdapterCast
         })
+
+        val view: View = findViewById(R.id.id)
+        viewModel.isLoading.observe(this, Observer {
+            if(it)
+            {
+                view.loadSkeleton()
+            }
+            else
+            {
+                view.hideSkeleton()
+            }
+        })
+
 
         button.setOnClickListener{
             if(movieId != -1) {

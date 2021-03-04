@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mymovieapp.data.Repository
 import com.example.mymovieapp.data.db.DataBase
+import com.example.mymovieapp.data.models.Movie
 import com.example.mymovieapp.data.models.fromDetailMovieToMovie
 import com.example.mymovieapp.data.models.fromDetailSerieToMovie
 import com.example.mymovieapp.data.modelsApi.*
@@ -30,6 +31,8 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     val _status: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
         value = false
     }
+    val _isLoading: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { value = true }
+
 
     val currentMovie: LiveData<MovieDetail> =_currentMovie
     val currentSerie: LiveData<SerieDetail> =_currentSerie
@@ -42,6 +45,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
     val cast: LiveData<List<Cast>> = _cast
     val status: LiveData<Boolean> = _status
     val director: LiveData<String> = _director
+    val isLoading: LiveData<Boolean> =  _isLoading
 
     init {
         val dao = DataBase.getDataBase(app).favorites()
@@ -108,6 +112,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
             ) {
                 _currentMovieOMDB.value = response.body()
                 _director.value = currentMovieOMDB.value?.Director ?: "No Director"
+                _isLoading.value = false
             }
 
             override fun onFailure(call: Call<MovieIMDB>, t: Throwable) {
@@ -142,7 +147,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
                     response: Response<MovieCredits>
             ) {
                 _cast.value = response.body()?.cast
-                var a = 1
+                _isLoading.value = false
             }
 
             override fun onFailure(call: Call<MovieCredits>, t: Throwable) {
