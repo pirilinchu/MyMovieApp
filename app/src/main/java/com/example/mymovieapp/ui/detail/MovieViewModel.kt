@@ -152,6 +152,7 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
             ) {
                 _currentMovieOMDB.value = response.body()
                 _director.value = currentMovieOMDB.value?.Director ?: "No Director"
+                _rating.value = currentMovieOMDB.value?.imdbRating!!.toDouble() ?: 0.0
                 _isLoading.value = false
             }
 
@@ -209,7 +210,6 @@ class MovieViewModel(app: Application) : AndroidViewModel(app) {
         _title.value = currentMovie.value?.original_title ?: "No Title"
         _image.value = currentMovie.value?.poster_path ?: "No Image"
         _description.value = currentMovie.value?.overview ?: "No Description"
-        _rating.value = currentMovie.value?.vote_average ?: 0.0
     }
 
     private fun loadSerieData() {
