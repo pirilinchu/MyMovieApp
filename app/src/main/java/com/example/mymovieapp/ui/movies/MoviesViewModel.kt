@@ -1,6 +1,7 @@
 package com.example.mymovieapp.ui.movies
 
 import android.app.Application
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -10,11 +11,18 @@ import com.example.mymovieapp.data.db.DataBase
 import com.example.mymovieapp.data.models.Movie
 import com.example.mymovieapp.data.models.fromResultToMovie
 import com.example.mymovieapp.data.modelsApi.ApiResponse
+import com.example.mymovieapp.data.modelsApi.ApiResponseSerie
+import com.example.mymovieapp.keyIncoming
+import com.example.mymovieapp.keyNow
+import com.example.mymovieapp.keyPopular
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MoviesViewModel(app: Application) : AndroidViewModel(app) {
+
+    val preferences = PreferenceManager.getDefaultSharedPreferences(app)
 
     private val repository: Repository
     private val _moviesNow: MutableLiveData<List<Movie>> = MutableLiveData()
@@ -45,6 +53,7 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
             ) {
                 var response = response.body()
                 if(response != null) {
+                    saveCache(response, keyNow)
                     for (i in response.results){
                         moviesNow = moviesNow.plus(fromResultToMovie(i))
                     }
@@ -53,6 +62,13 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
             }
 
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                val response = getCache(keyNow)
+
+                for (i in response.results){
+                    moviesNow = moviesNow.plus(fromResultToMovie(i))
+                }
+                _moviesNow.value = moviesNow
+
                 _status.value = true
                 Log.d("tag", t.message.toString())
             }
@@ -70,6 +86,7 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
             ) {
                 var response = response.body()
                 if(response != null) {
+                    saveCache(response, keyIncoming)
                     for (i in response.results){
                         moviesIncoming = moviesIncoming.plus(fromResultToMovie(i))
                     }
@@ -78,6 +95,13 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
             }
 
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                val response = getCache(keyIncoming)
+
+                for (i in response.results){
+                    moviesIncoming = moviesIncoming.plus(fromResultToMovie(i))
+                }
+                _moviesIncoming.value = moviesIncoming
+
                 _status.value = true
                 Log.d("tag", t.message.toString())
             }
@@ -95,6 +119,7 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
             ) {
                 var response = response.body()
                 if(response != null) {
+                    saveCache(response, keyPopular)
                     for (i in response!!.results){
                         moviesPopular = moviesPopular.plus(fromResultToMovie(i))
                     }
@@ -103,10 +128,31 @@ class MoviesViewModel(app: Application) : AndroidViewModel(app) {
             }
 
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                val response = getCache(keyPopular)
+
+                for (i in response!!.results) {
+                    moviesPopular = moviesPopular.plus(fromResultToMovie(i))
+                }
+                _moviesPopular.value = moviesPopular
                 _status.value = true
                 Log.d("tag", t.message.toString())
             }
         })
+    }
+
+    fun saveCache (response: ApiResponse, key: String) {
+        var editor = preferences.edit()
+        var gson = Gson()
+        var jsonString = gson.toJson(response)
+
+        editor.putString(key, jsonString)
+        editor.apply()
+    }
+
+    private fun getCache(key: String): ApiResponse {
+        var responseString = preferences.getString(key, "None")
+        var gson = Gson()
+        return gson.fromJson(responseString, ApiResponse::class.java)
     }
 
 

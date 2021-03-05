@@ -1,7 +1,9 @@
 package com.example.mymovieapp.data.modelsApi
 
+import java.io.Serializable
+
 data class ResultSerie(
-    val backdrop_path: Any,
+    val backdrop_path: String,
     val first_air_date: String,
     val genre_ids: List<Int>,
     val id: Int,
@@ -14,4 +16,6 @@ data class ResultSerie(
     val poster_path: String,
     val vote_average: Double,
     val vote_count: Int
-)
+): Serializable {
+
+}
