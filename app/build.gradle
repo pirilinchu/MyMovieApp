@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+    id 'kotlinx-serialization'
+//    id 'org.jetbrains.kotlin.multiplatform' version '1.4.30' apply false
+//    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30' apply false
 }
 
 android {
@@ -35,6 +38,10 @@ android {
     dataBinding {
         enabled = true
     }
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -82,4 +89,7 @@ dependencies {
 
     //Skeleton
     implementation("com.ericktijerou.koleton:koleton:0.8.8")
+
+    //serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
 }

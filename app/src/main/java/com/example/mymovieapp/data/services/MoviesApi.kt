@@ -16,7 +16,7 @@ interface MoviesApi {
     @GET("movie/upcoming?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US&page=1")
     fun getMoviesIncoming(): Call<ApiResponse>
 
-    @GET("tv/popular?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US&page=1")
+    @GET("tv/popular?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US&page=2")
     fun getSeries(): Call<ApiResponseSerie>
 
     @GET("movie/{id}?api_key=d3a6bd82af12c91d08149f6613e5dce2&language=en-US&page=1")

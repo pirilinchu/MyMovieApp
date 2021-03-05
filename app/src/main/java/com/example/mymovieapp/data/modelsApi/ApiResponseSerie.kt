@@ -6,4 +6,6 @@ data class ApiResponseSerie(
     val results: List<ResultSerie>,
     val total_pages: Int,
     val total_results: Int
-)
+) : java.io.Serializable {
+
+}
